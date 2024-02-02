@@ -2,10 +2,12 @@ package com.sumbaseassignment.Services;
 
 import com.sumbaseassignment.Model.Customer;
 import com.sumbaseassignment.Repository.CustomerRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerServices {
@@ -30,6 +32,17 @@ public class CustomerServices {
             throw new Exception("Customer Id is not valid please check");
         }
     }
+
+//    public Customer getCustomerById(Integer cutomerId) throws Exception{
+//        Optional<Customer> optionalCustomer = customerRepository.findById(cutomerId);
+//
+//        if(optionalCustomer.isEmpty()){
+//            throw new Exception("customer Id is invalid");
+//        }
+//        Customer result = optionalCustomer.get();
+//        return  result;
+//    }
+
 
 
     public void deleteCustomerById(int customerId) {
