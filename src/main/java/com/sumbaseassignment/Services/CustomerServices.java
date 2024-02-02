@@ -4,6 +4,7 @@ import com.sumbaseassignment.Model.Customer;
 import com.sumbaseassignment.Repository.CustomerRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,32 +26,21 @@ public class CustomerServices {
     }
 
     public Customer getCustomerById(int customerId) throws  Exception{
-        try {
-            return customerRepository.findById(customerId).orElse(null);
+
+        Optional<Customer> customer = customerRepository.findById(customerId);
+
+        if(customer.isEmpty()){
+            throw new Exception("Customer not found");
         }
-        catch (Exception e){
-            throw new Exception("Customer Id is not valid please check");
-        }
+        return customer.get();
     }
 
-//    public Customer getCustomerById(Integer cutomerId) throws Exception{
-//        Optional<Customer> optionalCustomer = customerRepository.findById(cutomerId);
-//
-//        if(optionalCustomer.isEmpty()){
-//            throw new Exception("customer Id is invalid");
-//        }
-//        Customer result = optionalCustomer.get();
-//        return  result;
-//    }
 
-
-
-    public void deleteCustomerById(int customerId) {
+    public void deleteCustomerById(int customerId) throws Exception {
         try {
             customerRepository.deleteById(customerId);
-        }
-        catch (Exception e) {
-            throw new RuntimeException("Customer Id is not valid, please check again: " + customerId, e);
+        } catch (EmptyResultDataAccessException e) {
+            throw new Exception("Invalid id: " + customerId, e);
         }
     }
 
@@ -83,10 +73,5 @@ public class CustomerServices {
     public List<Customer> getAllCustomer() {
         return customerRepository.findAll();
     }
-
-
-
-
-
 
 }
