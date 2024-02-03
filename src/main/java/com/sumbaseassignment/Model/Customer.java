@@ -16,7 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 
 public class Customer {
-
+    // Primary key for the customer entity, auto-generated.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int customerId;

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/sunbase/portal/api")
+@CrossOrigin
 public class AuthController {
 
     @Autowired
@@ -32,37 +33,43 @@ public class AuthController {
     private Logger logger = LoggerFactory.getLogger(AuthController.class);
 
 
+    // Endpoint for handling user authentication and generating JWT token.
+
     @PostMapping("/assignment_auth.jsp")
     public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request) {
 
+        // Authenticate user credentials.
         this.doAuthenticate(request.getEmail(), request.getPassword());
 
-
+        // Retrieve user details and generate JWT token.
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
         String token = this.helper.generateToken(userDetails);
 
+        // Build and return JWT response.
         JwtResponse response = JwtResponse.builder()
                 .jwtToken(token)
                 .userName(userDetails.getUsername()).build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    // Helper method for authenticating user credentials.
     private void doAuthenticate(String email, String password) {
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, password);
         try {
             manager.authenticate(authentication);
 
-
+            // Throw exception for invalid credentials if login details is invalid
         } catch (BadCredentialsException e) {
             throw new BadCredentialsException(" Invalid Username or Password  !!");
         }
 
     }
 
+    // Exception handler for BadCredentialsException.
     @ExceptionHandler(BadCredentialsException.class)
-    public String exceptionHandler() {
-        return "Credentials Invalid !!";
+    public ResponseEntity<String> exceptionHandler() {
+        return new ResponseEntity("Invalid email and password", HttpStatus.BAD_REQUEST);
     }
 
 }

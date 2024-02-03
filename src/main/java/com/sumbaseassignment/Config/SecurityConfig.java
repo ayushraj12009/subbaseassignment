@@ -19,17 +19,22 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter filter;
 
+    // Defines a security filter chain with custom configurations.
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf(csrf -> csrf.disable())
+                // Configures URL permissions, allowing access to certain paths without authentication.
                 .authorizeRequests().
                 requestMatchers("/home/**").authenticated().requestMatchers("/sunbase/portal/api/assignment_auth.jsp").permitAll()
                 .anyRequest()
                 .authenticated()
+                // Configures exception handling, specifying the authentication entry point.
                 .and().exceptionHandling(ex -> ex.authenticationEntryPoint(point))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        // Adds a custom JWT authentication filter before the UsernamePasswordAuthenticationFilter.
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+        // Builds and returns the configured security filter chain.
         return http.build();
     }
 

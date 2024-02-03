@@ -13,8 +13,13 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 class MyConfig {
+
+    // Defines a bean for providing user details for authentication.
+
     @Bean
     public UserDetailsService userDetailsService() {
+        // Creates a user with username "test@sunbasedata.com", encoded password, and role "ADMIN"
+        // this is for login
         UserDetails userDetails = User.builder().
                 username("test@sunbasedata.com")
                 .password(passwordEncoder().encode("Test@123")).roles("ADMIN").
@@ -22,11 +27,15 @@ class MyConfig {
         return new InMemoryUserDetailsManager(userDetails);
     }
 
+
+    // Defines a bean for password encoding.
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+
+    // Defines a bean for providing the authentication manager.
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration builder) throws Exception {
         return builder.getAuthenticationManager();

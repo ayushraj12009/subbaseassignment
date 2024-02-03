@@ -1,32 +1,27 @@
 package com.sumbaseassignment.Controller;
 
 
-import com.sumbaseassignment.Exception.ResourceNotFoundException;
 import com.sumbaseassignment.Model.Customer;
 import com.sumbaseassignment.Services.CustomerServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController
 @RequestMapping("/home")
+@CrossOrigin
 public class CustomerController {
 
     @Autowired
     private CustomerServices customerServices;
 
-    @GetMapping("/user")
-    public String geuserDetails(){
-        System.out.print("Getting User");
-        return "users";
-    }
-
+    // Endpoint for creating a new customer.
     @PostMapping("/api/create")
     public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) throws Exception{
         try{
@@ -38,16 +33,22 @@ public class CustomerController {
         }
     }
 
+
+
+    // Endpoint for retrieving a paginated list of customers.
     @GetMapping("/api/getlist")
-    public ResponseEntity<List<Customer>> getList() throws  Exception{
-        try{
-            return ResponseEntity.ok(customerServices.getAllCustomer());
-        }
-        catch (Exception e){
+    public ResponseEntity<Page<Customer>> getList(@RequestParam(defaultValue = "0") int page,
+                                                  @RequestParam(defaultValue = "10") int size) throws Exception {
+        try {
+            Page<Customer> customerPage = customerServices.getAllCustomers(PageRequest.of(page, size));
+            return ResponseEntity.ok(customerPage);
+        } catch (Exception e) {
             throw new Exception("Internal Server Issue");
         }
     }
 
+
+    // Endpoint for retrieving customer details by ID.
     @GetMapping("/api/CustomerById/{customerId}")
     public ResponseEntity findById(@PathVariable int customerId) throws Exception{
         try{
@@ -59,18 +60,7 @@ public class CustomerController {
         }
     }
 
-//    @DeleteMapping("/api/deleteById/{id}")
-//    public ResponseEntity<String> deleteById(@PathVariable int id ) {
-//            try {
-//                customerServices.deleteCustomerById(id);
-//                return ResponseEntity.ok("Cutomer deleted from DB");
-//            }
-//            catch (Exception e){
-//                return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-//            }
-//    }
-
-
+    // Endpoint for deleting a customer by ID.
     @DeleteMapping("/api/deleteById/{customerId}")
     public ResponseEntity deleteById(@PathVariable int customerId) {
         try {
@@ -82,6 +72,7 @@ public class CustomerController {
         }
     }
 
+    // Endpoint for updating customer details by ID.
     @PutMapping("/api/updateDetails/{id}")
     public ResponseEntity<Customer> updateCustomerDetails(
             @PathVariable int id,
@@ -92,15 +83,23 @@ public class CustomerController {
             if (updatedCustomer != null) {
                 return ResponseEntity.ok(updatedCustomer);
             } else {
-                // If the customer with the given ID is not found, return a response with 404 status
+
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(null); // or new ResponseEntity<>("Customer not found with ID: " + id, HttpStatus.NOT_FOUND);
+                        .body(null);
             }
         } catch (Exception e) {
-            // Handle other exceptions, and return a response with 500 Internal Server Error status
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    // Endpoint for searching customers by a searchTerm.
+    @GetMapping("/api/customers/search")
+    public List<Customer> searchCustomers(@RequestParam String searchTerm) {
+        return customerServices.searchCustomers(searchTerm);
+    }
+
+
+
 
 
 

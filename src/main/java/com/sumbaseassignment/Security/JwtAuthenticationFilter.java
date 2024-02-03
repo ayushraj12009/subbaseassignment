@@ -24,27 +24,34 @@ import java.util.Enumeration;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    // Logger for logging information.
     private Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
+    // Autowired instance of JwtHelper for JWT-related operations.
     @Autowired
     private JwtHelper jwtHelper;
 
+    // Autowired instance of UserDetailsService for loading user details.
     @Autowired
     private UserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        // Logs the headers of the incoming request.
         logRequestHeaders(request);
 
+        // Retrieves the "Authorization" header from the request.
         String requestHeader = request.getHeader("Authorization");
         logger.info("Header: {}", requestHeader);
         String username = null;
         String token = null;
 
+        // Checks if the header is present and starts with "Bearer".
         if (requestHeader != null && requestHeader.startsWith("Bearer")) {
             token = requestHeader.substring(7);
             try {
+                // Extracts the username from the JWT token.
                 username = this.jwtHelper.getUsernameFromToken(token);
             } catch (IllegalArgumentException e) {
                 logger.error("Illegal Argument while fetching the username !!", e);
@@ -60,9 +67,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            // Load UserDetails from the userDetailsService.
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             Boolean validateToken = this.jwtHelper.validateToken(token, userDetails);
 
+            // If token is valid, set the authentication context.
             if (validateToken) {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -75,6 +84,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    // Logs the headers of the incoming request.
     private void logRequestHeaders(HttpServletRequest request) {
         Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()) {
