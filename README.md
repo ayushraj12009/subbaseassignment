@@ -38,6 +38,16 @@ In my case i use http://localhost:8080/home then api end point
    - Path: `/api/customers/search`
    - Method: GET
    - Description: Serach a Cutomer by Name, Email, State, City
+  
+1st Screen ( **Login Page**)
+![image](https://github.com/ayushraj12009/sunbaseassignmentbackend/assets/51042913/a3bc167d-5861-43b7-a8c6-cdd8738e2b6b)
+
+2nd Screen (**Customer Details with edit and delete button**)
+![image](https://github.com/ayushraj12009/sunbaseassignmentbackend/assets/51042913/3f526fb6-8af8-4989-a79d-2092f5798e8f)
+
+3rd Screen (**Adding a customer**)
+![image](https://github.com/ayushraj12009/sunbaseassignmentbackend/assets/51042913/c83677f6-9d2d-4c5b-9165-fd3f1c592c50)
+
 
 ### Second Phase
 
