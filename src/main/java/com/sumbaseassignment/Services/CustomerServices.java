@@ -12,6 +12,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,9 +98,6 @@ public class CustomerServices {
             throw new Exception("Customer not found");
         }
     }
-
-
-
     // Retrieves all customers with pagination.
     public Page<Customer> getAllCustomers(Pageable pageable) {
         return customerRepository.findAll(pageable);
@@ -101,8 +107,6 @@ public class CustomerServices {
     public List<Customer> searchCustomers(String searchTerm) {
         return customerRepository.searchCustomers(searchTerm);
     }
-
-
 
 
 
