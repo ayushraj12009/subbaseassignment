@@ -7,7 +7,7 @@ This repository contains the codebase for a backend API that manages customer in
 ### Assignment Completion
 
 The following API endpoints have been implemented in the initial phase:
-In my case i use http://localhost:8080/home/ then api end point
+In my case i use http://localhost:8080/home then api end point
 
 1. **Create a Customer**
    - Path: `/api/customers`
