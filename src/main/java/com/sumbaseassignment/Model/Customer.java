@@ -21,9 +21,11 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int customerId;
 
-    private String firstName;
+    private String uuid;
 
-    private String lastName;
+    private String first_name;
+
+    private String last_name;
 
     private String street;
 
@@ -35,6 +37,6 @@ public class Customer {
 
     private String email;
 
-    private String phoneNumber;
+    private String phone;
 
 }
