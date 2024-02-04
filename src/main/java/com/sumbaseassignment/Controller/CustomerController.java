@@ -92,12 +92,49 @@ public class CustomerController {
         }
     }
 
-    // Endpoint for searching customers by a searchTerm.
+     //Endpoint for searching customers by a searchTerm.
     @GetMapping("/api/customers/search")
     public List<Customer> searchCustomers(@RequestParam String searchTerm) {
         return customerServices.searchCustomers(searchTerm);
     }
 
+
+    @GetMapping("/api/customers/search/sunbase")
+    public List<Customer> searchCustomers() {
+        return customerServices.addDataCustomer();
+    }
+
+
+
+
+
+
+
+
+
+//    -----------------------------------------------
+
+//    @PostMapping("/sync")
+//    public ResponseEntity<String> syncCustomerList() {
+//        customerServices.syncCustomerList();
+//        return ResponseEntity.ok("Sync process initiated");
+//    }
+
+
+//    -----------------------------------------------
+
+    // Endpoint for triggering customer data synchronization
+//    @GetMapping("/sync")
+//    public ResponseEntity<String>  syncCustomerList() {
+//        try {
+//            customerServices.syncCustomerList();
+//            return ResponseEntity.ok("Sync process initiated");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body("Error during synchronization: " + e.getMessage());
+//        }
+//
+//    }
 
 
 

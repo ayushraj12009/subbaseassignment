@@ -10,4 +10,5 @@ public class SunbaseCustomerCrudOperationApplication {
 		SpringApplication.run(SunbaseCustomerCrudOperationApplication.class, args);
 	}
 
+
 }
