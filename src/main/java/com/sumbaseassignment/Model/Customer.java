@@ -21,7 +21,8 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int customerId;
 
-    private String uuid;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private String uuid = String.valueOf(UUID.randomUUID());
 
     private String first_name;
 
