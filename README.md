@@ -1,5 +1,5 @@
 # SunBase Backend Project
-
+ 
 ## Assignment Project 
 
 This repository contains the codebase for a backend API that manages customer information. The assignment involves implementing various CRUD operations and later extending the functionality in the second phase to synchronize customer data from a remote API.
